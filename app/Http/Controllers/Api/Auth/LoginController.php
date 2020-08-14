@@ -4,6 +4,8 @@ namespace App\Http\Controllers\Api\Auth;
 
 use App\Http\Controllers\Controller;
 use App\Http\Requests\LoginRequest;
+use App\Http\Requests\RegisterRequest;
+use App\User;
 
 class LoginController extends Controller
 {
@@ -21,6 +23,26 @@ class LoginController extends Controller
 
         return response()->json([
             'token' => $token
+        ]);
+    }
+
+    public function register(RegisterRequest $request)
+    {
+        $validated = $request->validated();
+
+        if($validated['password'] !== $validated['password_repeat']) {
+            return response()->json([
+                'error' => 'Passwords does not match each other.'
+            ], 401);
+        }
+
+        unset($validated['password_repeat']);
+        $validated['password'] = bcrypt($validated['password']);
+
+        $user = User::create($validated);
+
+        return response()->json([
+            'data' => $user,
         ]);
     }
 }
