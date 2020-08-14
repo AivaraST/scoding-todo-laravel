@@ -4,9 +4,9 @@ namespace App\Http\Controllers\Api\Admin;
 
 use App\Http\Controllers\Controller;
 use App\Http\Requests\TaskStoreRequest;
+use App\Http\Requests\TaskUpdateRequest;
 use App\Task;
 use App\User;
-use Illuminate\Http\Request;
 
 class TaskAdminController extends Controller
 {
@@ -14,6 +14,13 @@ class TaskAdminController extends Controller
     {
         return response()->json([
             'data' => $user->tasks,
+        ]);
+    }
+
+    public function show(Task $task)
+    {
+        return response()->json([
+            'data' => $task,
         ]);
     }
 
@@ -29,16 +36,18 @@ class TaskAdminController extends Controller
         ]);
     }
 
-    /**
-     * Update the specified resource in storage.
-     *
-     * @param  \Illuminate\Http\Request  $request
-     * @param  \App\Task  $task
-     * @return \Illuminate\Http\Response
-     */
-    public function update(Request $request, Task $task)
+    public function update(TaskUpdateRequest $request, Task $task)
     {
-        //
+        $validated = $request->validated();
+
+        foreach ($validated as $field => $value) {
+            $task->$field = $value;
+        }
+        $task->save();
+
+        return response()->json([
+            'message' => 'Task data updated successfully',
+        ]);
     }
 
     public function destroy(Task $task)
