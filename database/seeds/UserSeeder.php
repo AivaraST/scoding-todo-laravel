@@ -22,6 +22,7 @@ class UserSeeder extends Seeder
                 'name' => 'Aivaras',
                 'email' => 'stasiulis.aivaras@gmail.com',
                 'password' => bcrypt('admin'),
+                'admin' => true,
                 'created_at' => Carbon::now(),
                 'updated_at' => Carbon::now(),
             ]
@@ -33,6 +34,7 @@ class UserSeeder extends Seeder
                 'name' => $faker->name,
                 'email' => $faker->email,
                 'password' => bcrypt('userpass'),
+                'admin' => false,
                 'created_at' => Carbon::now(),
                 'updated_at' => Carbon::now(),
             ];

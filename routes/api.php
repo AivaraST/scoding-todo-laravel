@@ -13,10 +13,23 @@ use Illuminate\Support\Facades\Route;
 | is assigned the "api" middleware group. Enjoy building your API!
 |
 */
+Route::group(['namespace' => 'Api'], function() {
 
-Route::middleware('auth:api')->get('/user', function (Request $request) {
-    return $request->user();
+    // Authentication routes for login / register.
+    Route::group(['namespace' => 'Auth'], function() {
+        Route::post('/login', "LoginController@login");
+        Route::post('/register', "LoginController@register");
+    });
+
+    // Admin routes works only for admin users.
+    Route::group(['namespace' => 'Admin', 'middleware' => 'admin'], function() {
+
+        // Manage users.
+        Route::get('/users', "UserAdminController@index");
+        Route::get('/users/{user}', "UserAdminController@show");
+        Route::post('/users', "UserAdminController@store");
+        Route::put('/users/{user}', "UserAdminController@update");
+        Route::delete('/users/{user}', "UserAdminController@destroy");
+
+    });
 });
-
-// JWT authentication
-Route::post('/login', "Api\Auth\LoginController@login");
