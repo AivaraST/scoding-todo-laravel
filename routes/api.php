@@ -16,13 +16,13 @@ use Illuminate\Support\Facades\Route;
 Route::group(['namespace' => 'Api'], function() {
 
     // Authentication routes for login / register.
-    Route::group(['namespace' => 'Auth'], function() {
+    Route::group(['namespace' => 'Auth', 'prefix' => 'auth'], function() {
         Route::post('/login', "LoginController@login");
         Route::post('/register', "LoginController@register");
     });
 
     // Admin routes works only for admin users.
-    Route::group(['namespace' => 'Admin', 'middleware' => 'admin'], function() {
+    Route::group(['namespace' => 'Admin', 'middleware' => 'admin', 'prefix' => 'admin'], function() {
 
         // Manage users.
         Route::get('/users', "UserAdminController@index");
@@ -32,11 +32,11 @@ Route::group(['namespace' => 'Api'], function() {
         Route::delete('/users/{user}', "UserAdminController@destroy");
 
         // Manage user tasks.
-        Route::get('/tasks/{user}', "TaskAdminController@index");
-        Route::get('/task/{task}', "TaskAdminController@show");
-        Route::post('/tasks/{user}', "TaskAdminController@store");
-        Route::put('/tasks/{task}', "TaskAdminController@update");
-        Route::delete('/tasks/{task}', "TaskAdminController@destroy");
+        Route::get('user/{user}/tasks', "TaskAdminController@index");
+        Route::get('tasks/{task}', "TaskAdminController@show");
+        Route::post('user/{user}/tasks', "TaskAdminController@store");
+        Route::put('tasks/{task}', "TaskAdminController@update");
+        Route::delete('tasks/{task}', "TaskAdminController@destroy");
 
     });
 });
