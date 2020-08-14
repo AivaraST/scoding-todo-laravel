@@ -8,7 +8,7 @@ use App\Task;
 use App\User;
 use Illuminate\Http\Request;
 
-class TaskController extends Controller
+class TaskAdminController extends Controller
 {
     public function index(User $user)
     {

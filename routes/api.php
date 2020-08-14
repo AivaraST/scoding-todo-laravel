@@ -31,5 +31,12 @@ Route::group(['namespace' => 'Api'], function() {
         Route::put('/users/{user}', "UserAdminController@update");
         Route::delete('/users/{user}', "UserAdminController@destroy");
 
+        // Manage user tasks.
+        Route::get('/tasks/{user}', "TaskAdminController@index");
+        Route::get('/task/{task}', "TaskAdminController@show");
+        Route::post('/tasks/{user}', "TaskAdminController@store");
+        Route::put('/tasks/{task}', "TaskAdminController@update");
+        Route::delete('/tasks/{task}', "TaskAdminController@destroy");
+
     });
 });
