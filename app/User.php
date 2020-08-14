@@ -49,6 +49,11 @@ class User extends Authenticatable implements JWTSubject
         return [];
     }
 
+    public function isAdministrator()
+    {
+        return $this->admin;
+    }
+
     /**
      * Relationship for user tasks
      */
