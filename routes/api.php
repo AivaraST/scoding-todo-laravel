@@ -39,4 +39,10 @@ Route::group(['namespace' => 'Api'], function() {
         Route::delete('tasks/{task}', "TaskAdminController@destroy");
 
     });
+
+    // User routes (dashboard)
+    Route::group(['prefix' => 'dashboard'], function() {
+        Route::get('tasks', "TaskController@index");
+        Route::put('tasks/{task}', "TaskController@update");
+    });
 });
