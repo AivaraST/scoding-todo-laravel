@@ -42,7 +42,7 @@ Route::group(['namespace' => 'Api'], function() {
 
     // User routes (dashboard)
     Route::group(['prefix' => 'dashboard'], function() {
-        Route::get('tasks', "TaskController@index");
+        Route::get('tasks/{sortName?}/{sortType?}', "TaskController@index");
         Route::put('tasks/{task}', "TaskController@update");
     });
 });

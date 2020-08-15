@@ -10,11 +10,19 @@ use Illuminate\Support\Facades\Auth;
 
 class TaskController extends Controller
 {
-    public function index()
+    public function index($sortName = null, $sortType = 'desc')
     {
         $user = Auth::user();
+        $responseData = [];
+
+        if($sortName !== null) {
+            $responseData = $user->tasks()->orderBy($sortName, $sortType)->get();
+        } else {
+            $responseData = $user->tasks;
+        }
+
         return response()->json([
-            'data' => $user->tasks,
+            'data' => $responseData,
         ]);
     }
 
