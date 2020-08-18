@@ -18,7 +18,7 @@ class CreateTasksTable extends Migration
             $table->bigInteger('user_id')->unsigned();
             $table->string('name');
             $table->text('description');
-            $table->enum('status', ['todo', 'in-progress', 'done']);
+            $table->enum('status', ['assigned', 'inprogress', 'done']);
             $table->timestamps();
 
             $table->foreign('user_id')->references('id')->on('users');

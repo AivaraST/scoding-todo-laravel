@@ -33,7 +33,7 @@ class TaskStoreRequest extends FormRequest
             'status' => [
                 'required',
                 'string',
-                Rule::in(['todo', 'in-progress', 'done']),
+                Rule::in(['assigned', 'inprogress', 'done']),
             ],
         ];
     }

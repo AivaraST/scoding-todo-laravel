@@ -31,7 +31,7 @@ class TaskUpdateRequest extends FormRequest
             'description' => 'string',
             'status' => [
                 'string',
-                Rule::in(['todo', 'in-progress', 'done']),
+                Rule::in(['assigned', 'inprogress', 'done']),
             ],
         ];
     }
