@@ -4,6 +4,7 @@ namespace App\Http\Controllers\Api;
 
 use App\Http\Controllers\Controller;
 use App\Http\Requests\TaskUpdateRequest;
+use App\Http\Resources\TaskResource;
 use App\Task;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
@@ -21,9 +22,7 @@ class TaskController extends Controller
             $responseData = $user->tasks;
         }
 
-        return response()->json([
-            'data' => $responseData,
-        ]);
+        return TaskResource::collection($responseData);
     }
 
     public function update(TaskUpdateRequest $request, Task $task)
