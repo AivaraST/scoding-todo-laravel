@@ -15,10 +15,15 @@ use Illuminate\Support\Facades\Route;
 */
 Route::group(['namespace' => 'Api'], function() {
 
-    // Authentication routes for login / register.
+    // Authentication routes.
     Route::group(['namespace' => 'Auth', 'prefix' => 'auth'], function() {
-        Route::post('/login', "LoginController@login");
-        Route::post('/register', "LoginController@register");
+        Route::post('/login', "AuthController@login");
+        Route::post('/register', "AuthController@register");
+
+        Route::group(['middleware' => 'auth:api'], function() {
+            Route::post('/logout', "AuthController@logout");
+            Route::get('/user', "AuthController@user");
+        });
     });
 
     // Admin routes works only for admin users.
