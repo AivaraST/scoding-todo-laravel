@@ -27,8 +27,8 @@ class TaskSeeder extends Seeder
                     'name' => $faker->company,
                     'description' => $faker->sentence,
                     'status' => $statuses[array_rand($statuses)],
-                    'created_at' => Carbon::now(),
-                    'updated_at' => Carbon::now(),
+                    'created_at' => Carbon::now()->subMinutes(rand(500, 100000)),
+                    'updated_at' => Carbon::now()->subMinutes(rand(500, 100000))
                 ];
             }
         }

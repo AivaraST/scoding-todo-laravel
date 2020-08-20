@@ -31,7 +31,7 @@ class UserSeeder extends Seeder
         // Add random users
         for($i = 0; $i < 10; $i++) {
             $users[] = [
-                'name' => $faker->firstName,
+                'name' => "{$faker->firstName} {$faker->lastName}",
                 'email' => $faker->email,
                 'password' => bcrypt('userpass'),
                 'admin' => false,
