@@ -26,13 +26,13 @@ class UserStoreRequest extends FormRequest
      */
     public function rules()
     {
-        $user = Auth::user();
+//        $user = Auth::user();
 
         return [
-            'name' => 'required|string|min:3|max:30',
-            'email' => 'required|unique:users,email,'.$user->id,
-            'password' => 'required|string|min:6',
-            'password_repeat' => 'required',
+            'name' => 'required|min:3|max:30',
+            'email' => 'required|unique:users',
+            'password' => 'required|same:password_repeat|min:6',
+            'password_repeat' => 'required|same:password|min:6',
         ];
     }
 

@@ -31,9 +31,8 @@ class UserUpdateRequest extends FormRequest
         $user = $this->route()->parameter('user');
 
         return [
-            'name' => 'min:1',
-            'email' => 'email|unique:users,email,'.$user->id,
-            'password' => 'min:1',
+            'name' => 'min:3|max:30',
+            'email' => 'email|unique:users,email,'.$user->id
         ];
     }
 
