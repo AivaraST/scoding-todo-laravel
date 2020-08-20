@@ -28,57 +28,25 @@ Route::group(['namespace' => 'Api\Auth', 'prefix' => 'auth', 'middleware' => 'ap
 
 // User tasks
 Route::group(['namespace' => 'Api', 'prefix' => 'dashboard', 'middleware' => ['api', 'jwt.verify']], function() {
-    Route::get('tasks/{sortName?}/{sortType?}', "TaskController@index");
+    Route::get('tasks', "TaskController@index");
     Route::put('tasks/{task}', "TaskController@update")->middleware('user.task');
 });
 
+// Admin actions.
+Route::group(['namespace' => 'Api\Admin', 'prefix' => 'admin', 'middleware' => ['api', 'jwt.verify', 'admin']], function() {
 
+    // Manage users.
+    Route::get('/users', "AdminUserController@index");
+    Route::get('/users/{user}', "AdminUserController@show");
+    Route::post('/users', "AdminUserController@store");
+    Route::put('/users/{user}', "AdminUserController@update");
+    Route::delete('/users/{user}', "AdminUserController@destroy");
 
-// Authentication routes.
-//Route::group(['namespace' => 'Api\Auth', 'prefix' => 'auth'], function() {
-//    Route::post('/login', ['as' => 'login', 'uses' => 'AuthController@login']);
-//    Route::post('/register', "AuthController@register");
-//        Route::get('/user', "AuthController@user")->middleware('jwt.auth');
-//});
+    // Manage user tasks.
+//    Route::get('user/{user}/tasks', "TaskAdminController@index");
+//    Route::get('tasks/{task}', "TaskAdminController@show");
+//    Route::post('user/{user}/tasks', "TaskAdminController@store");
+//    Route::put('tasks/{task}', "TaskAdminController@update");
+//    Route::delete('tasks/{task}', "TaskAdminController@destroy");
 
-//Route::group([
-//
-//    'namespace' => 'Api\Auth',
-//    'middleware' => 'api',
-//    'prefix' => 'auth'
-//
-//], function ($router) {
-//
-//    Route::post('login', 'AuthController@login');
-//    Route::post('logout', 'AuthController@logout');
-//    Route::post('refresh', 'AuthController@refresh');
-//    Route::post('me', 'AuthController@me');
-//
-//});
-
-//Route::group(['namespace' => 'Api'], function() {
-//    // Admin routes works only for admin users.
-//    Route::group(['namespace' => 'Admin', 'middleware' => ['jwt.auth', 'admin'], 'prefix' => 'admin'], function() {
-//
-//        // Manage users.
-//        Route::get('/users', "UserAdminController@index");
-//        Route::get('/users/{user}', "UserAdminController@show");
-//        Route::post('/users', "UserAdminController@store");
-//        Route::put('/users/{user}', "UserAdminController@update");
-//        Route::delete('/users/{user}', "UserAdminController@destroy");
-//
-//        // Manage user tasks.
-//        Route::get('user/{user}/tasks', "TaskAdminController@index");
-//        Route::get('tasks/{task}', "TaskAdminController@show");
-//        Route::post('user/{user}/tasks', "TaskAdminController@store");
-//        Route::put('tasks/{task}', "TaskAdminController@update");
-//        Route::delete('tasks/{task}', "TaskAdminController@destroy");
-//
-//    });
-//
-//    // User routes (dashboard)
-//    Route::group(['prefix' => 'dashboard', 'middleware' => 'auth:api'], function() {
-//        Route::post('tasks/{sortName?}/{sortType?}', "TaskController@index");
-//        Route::put('tasks/{task}', "TaskController@update");
-//    });
-//});
+});
