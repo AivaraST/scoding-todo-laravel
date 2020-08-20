@@ -4,6 +4,7 @@ use Carbon\Carbon;
 use Illuminate\Database\Seeder;
 use Illuminate\Support\Facades\DB;
 use Faker\Factory as Faker;
+use Illuminate\Support\Facades\Log;
 
 class TaskSeeder extends Seeder
 {
@@ -15,40 +16,21 @@ class TaskSeeder extends Seeder
     public function run()
     {
         $faker = Faker::create();
-
         $tasks = [];
+        $users = DB::table('users')->select()->get();
+        $statuses = ['assigned', 'inprogress', 'done'];
 
-        for($t = 0; $t < 5; $t++) {
-            $tasks[] = [
-                'user_id' => 1,
-                'name' => $faker->company,
-                'description' => $faker->sentence,
-                'status' => 'assigned',
-                'created_at' => Carbon::now(),
-                'updated_at' => Carbon::now(),
-            ];
-        }
-
-        for($t = 0; $t < 3; $t++) {
-            $tasks[] = [
-                'user_id' => 1,
-                'name' => $faker->word,
-                'description' => $faker->sentence,
-                'status' => 'inprogress',
-                'created_at' => Carbon::now(),
-                'updated_at' => Carbon::now(),
-            ];
-        }
-
-        for($t = 0; $t < 10; $t++) {
-            $tasks[] = [
-                'user_id' => 1,
-                'name' => $faker->word,
-                'description' => $faker->sentence,
-                'status' => 'done',
-                'created_at' => Carbon::now(),
-                'updated_at' => Carbon::now(),
-            ];
+        foreach($users as $user) {
+            for($t = 0; $t < 10; $t++) {
+                $tasks[] = [
+                    'user_id' => $user->id,
+                    'name' => $faker->company,
+                    'description' => $faker->sentence,
+                    'status' => $statuses[array_rand($statuses)],
+                    'created_at' => Carbon::now(),
+                    'updated_at' => Carbon::now(),
+                ];
+            }
         }
 
         DB::table('tasks')->insert($tasks);

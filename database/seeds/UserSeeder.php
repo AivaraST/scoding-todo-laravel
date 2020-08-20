@@ -19,8 +19,8 @@ class UserSeeder extends Seeder
         // Add initial admin user
         $users = [
             [
-                'name' => 'Aivaras',
-                'email' => 'stasiulis.aivaras@gmail.com',
+                'name' => 'admin',
+                'email' => 'admin@gmail.com',
                 'password' => bcrypt('admin'),
                 'admin' => true,
                 'created_at' => Carbon::now(),
@@ -31,7 +31,7 @@ class UserSeeder extends Seeder
         // Add random users
         for($i = 0; $i < 10; $i++) {
             $users[] = [
-                'name' => $faker->name,
+                'name' => $faker->firstName,
                 'email' => $faker->email,
                 'password' => bcrypt('userpass'),
                 'admin' => false,
