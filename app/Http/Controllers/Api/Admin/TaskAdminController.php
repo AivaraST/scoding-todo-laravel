@@ -5,6 +5,7 @@ namespace App\Http\Controllers\Api\Admin;
 use App\Http\Controllers\Controller;
 use App\Http\Requests\TaskStoreRequest;
 use App\Http\Requests\TaskUpdateRequest;
+use App\Http\Resources\TaskResource;
 use App\Task;
 use App\User;
 
@@ -12,9 +13,7 @@ class TaskAdminController extends Controller
 {
     public function index(User $user)
     {
-        return response()->json([
-            'data' => $user->tasks,
-        ]);
+        return TaskResource::collection($user->tasks);
     }
 
     public function show(Task $task)

@@ -28,24 +28,25 @@ class UserUpdateRequest extends FormRequest
      */
     public function rules()
     {
+        $user = $this->route()->parameter('user');
+
         return [
-            'name' => 'string|min:1',
-            'email' => [
-                'string',
-                'email',
-                'max:255',
-                Rule::unique('users', 'email'),
-            ],
-            'password' => 'string|min:1',
+            'name' => 'min:1',
+            'email' => 'email|unique:users,email,'.$user->id,
+            'password' => 'min:1',
         ];
     }
 
-    // Handle a failed validation attempt.
+    /**
+     * Send a failed validation attempt.
+     *
+     * @param Validator $validator
+     */
     protected function failedValidation(Validator $validator)
     {
         throw new HttpResponseException(
             response()->json([
-                'error' => $validator->errors()->first()
+                'messages' => $validator->errors()
             ], 400)
         );
     }

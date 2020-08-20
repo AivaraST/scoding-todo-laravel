@@ -7,22 +7,17 @@ use App\Http\Requests\TaskUpdateRequest;
 use App\Http\Resources\TaskResource;
 use App\Task;
 use Illuminate\Http\Request;
+use Illuminate\Http\Resources\Json\AnonymousResourceCollection;
 use Illuminate\Support\Facades\Auth;
 
 class TaskController extends Controller
 {
-    public function index($sortName = null, $sortType = 'desc')
+    /**
+     * @return AnonymousResourceCollection
+     */
+    public function index(): AnonymousResourceCollection
     {
-        $user = Auth::user();
-        $responseData = [];
-
-        if($sortName !== null) {
-            $responseData = $user->tasks()->orderBy($sortName, $sortType)->get();
-        } else {
-            $responseData = $user->tasks;
-        }
-
-        return TaskResource::collection($responseData);
+        return TaskResource::collection(Auth::user()->tasks);
     }
 
     public function update(TaskUpdateRequest $request, Task $task)

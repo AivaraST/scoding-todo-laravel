@@ -29,9 +29,10 @@ class UserStoreRequest extends FormRequest
         $user = Auth::user();
 
         return [
-            'name' => 'required',
-            'email' => 'unique:users,email,'.$user->id,
-            'password' => 'required',
+            'name' => 'required|string|min:3|max:30',
+            'email' => 'required|unique:users,email,'.$user->id,
+            'password' => 'required|string|min:6',
+            'password_repeat' => 'required',
         ];
     }
 
@@ -40,7 +41,7 @@ class UserStoreRequest extends FormRequest
     {
         throw new HttpResponseException(
             response()->json([
-                'error' => $validator->errors()->first()
+                'messages' => $validator->errors()
             ], 400)
         );
     }
