@@ -6,75 +6,89 @@ use App\Http\Controllers\Controller;
 use App\Http\Requests\LoginRequest;
 use App\Http\Requests\RegisterRequest;
 use App\User;
-use Carbon\Carbon;
+use Illuminate\Http\JsonResponse;
 
 class AuthController extends Controller
 {
-    // Login method for authentication
-    public function login(LoginRequest $request)
+    /**
+     * Get a JWT via given credentials.
+     * @param LoginRequest $request
+     * @return JsonResponse
+     */
+    public function login(LoginRequest $request): JsonResponse
     {
         $credentials = $request->validated();
-        $token = auth()->attempt($credentials, ['exp' => Carbon::now()->addDays(7)->timestamp]);
 
-        if(!$token) {
-            return response()->json([
-                'messages' => [
-                    'password' => [
-                        'Bad password, try again.'
-                    ]
-                ]
-            ], 401);
+        if (!$token = auth()->attempt($credentials)) {
+            return response()->json(['error' => 'Bad email or password.'], 400);
         }
 
-        return response()->json([
-            'token' => $token
-        ]);
+        return $this->respondWithToken($token);
     }
 
-    // Register method for authentication
+    /**
+     * Register new user.
+     * @param RegisterRequest $request
+     * @return JsonResponse
+     */
     public function register(RegisterRequest $request)
     {
         $validated = $request->validated();
 
         if($validated['password'] !== $validated['password_repeat']) {
             return response()->json([
-                'messages' => [
-                    'password' => [
-                        'Passwords does not match each other.'
-                    ],
-                    'password_repeat' => [
-                        'Passwords does not match each other.'
-                    ]
-                ]
-            ], 401);
+                'error' => 'Passwords does not match each other.'
+            ], 400);
         }
 
-        unset($validated['password_repeat']);
         $validated['password'] = bcrypt($validated['password']);
 
         $user = User::create($validated);
 
-        return response()->json([
-            'data' => $user,
-        ]);
+        return response()->json($user, 201);
     }
 
-    public function user()
-    {
-        $user = auth()->user();
-
-        return response()->json([
-            'name' => $user->name,
-            'email' => $user->email
-        ]);
-    }
-
-    public function logout()
+    /**
+     * Log the user out (Invalidate the token).
+     * @return JsonResponse
+     */
+    public function logout(): JsonResponse
     {
         auth()->logout();
 
+        return response()->json(['message' => 'Successfully logged out']);
+    }
+
+    /**
+     * Refresh a token.
+     * @return JsonResponse
+     */
+    public function refresh(): JsonResponse
+    {
+        return $this->respondWithToken(auth()->refresh());
+    }
+
+    /**
+     * Get the authenticated User.
+     * @return JsonResponse
+     */
+    public function user(): JsonResponse
+    {
+        return response()->json(auth()->user());
+    }
+
+    /**
+     * Get the token array structure.
+     * @param string $token
+     * @return JsonResponse
+     */
+    protected function respondWithToken(string $token): JsonResponse
+    {
         return response()->json([
-            'message' => 'Logged out successfully.',
+            'access_token' => $token,
+            'token_type' => 'bearer',
+            'expires_in' => auth()->factory()->getTTL() * 60,
+            'user' => auth()->user()
         ]);
     }
 }
