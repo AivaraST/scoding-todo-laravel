@@ -32,21 +32,20 @@ Route::group(['namespace' => 'Api', 'prefix' => 'dashboard', 'middleware' => ['a
     Route::put('tasks/{task}', "TaskController@update")->middleware('user.task');
 });
 
-// Admin actions.
+// Admin actions
 Route::group(['namespace' => 'Api\Admin', 'prefix' => 'admin', 'middleware' => ['api', 'jwt.verify', 'admin']], function() {
 
-    // Manage users.
+    // Manage users
     Route::get('/users', "AdminUserController@index");
     Route::get('/users/{user}', "AdminUserController@show");
     Route::post('/users', "AdminUserController@store");
     Route::put('/users/{user}', "AdminUserController@update");
     Route::delete('/users/{user}', "AdminUserController@destroy");
 
-    // Manage user tasks.
-//    Route::get('user/{user}/tasks', "TaskAdminController@index");
-//    Route::get('tasks/{task}', "TaskAdminController@show");
-//    Route::post('user/{user}/tasks', "TaskAdminController@store");
-//    Route::put('tasks/{task}', "TaskAdminController@update");
-//    Route::delete('tasks/{task}', "TaskAdminController@destroy");
-
+    // Manage user tasks
+    Route::get('user/{user}/tasks', "AdminTaskController@index");
+    Route::get('tasks/{task}', "AdminTaskController@show");
+    Route::post('user/{user}/tasks', "AdminTaskController@store");
+    Route::put('tasks/{task}', "AdminTaskController@update");
+    Route::delete('tasks/{task}', "AdminTaskController@destroy");
 });

@@ -43,7 +43,7 @@ class TaskStoreRequest extends FormRequest
     {
         throw new HttpResponseException(
             response()->json([
-                'error' => $validator->errors()->first()
+                'messages' => $validator->errors()
             ], 400)
         );
     }
