@@ -19,13 +19,13 @@ class AdminUser
         if(!$user = Auth::user()) {
             return response()->json([
                 'error' => 'Only for administrators.',
-            ], 401);
+            ], 403);
         }
 
         if(!$user->isAdministrator()) {
             return response()->json([
                 'error' => 'Only for administrators.',
-            ], 401);
+            ], 403);
         }
 
         return $next($request);
