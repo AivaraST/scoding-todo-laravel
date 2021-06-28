@@ -67,7 +67,7 @@ class AdminTaskController extends Controller
      * @return JsonResponse
      * @throws \Exception
      */
-    public function destroy(Task $task)
+    public function destroy(Task $task): JsonResponse
     {
         $task->delete();
 

@@ -9,7 +9,6 @@ use App\Http\Resources\UserResource;
 use App\User;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Resources\Json\ResourceCollection;
-use Psy\Util\Json;
 
 class AdminUserController extends Controller
 {
@@ -19,7 +18,9 @@ class AdminUserController extends Controller
      */
     public function index(): ResourceCollection
     {
-        return UserResource::collection(User::where('id', '!=', auth()->user()->id)->get());
+        $users = User::where('id', '!=', auth()->user()->id)->get();
+
+        return UserResource::collection($users);
     }
 
     /**
