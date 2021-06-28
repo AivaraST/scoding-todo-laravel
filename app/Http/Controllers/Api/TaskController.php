@@ -21,6 +21,12 @@ class TaskController extends Controller
 
     public function update(TaskUpdateRequest $request, Task $task): JsonResponse
     {
+        if (!Auth::user()->can('update', $task)) {
+            return response()->json([
+                'message' => 'Cannot update this task.',
+            ], 403);
+        }
+
         $task->update($request->validated());
 
         return response()->json([

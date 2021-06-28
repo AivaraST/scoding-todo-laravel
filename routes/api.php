@@ -29,7 +29,7 @@ Route::group(['namespace' => 'Api\Auth', 'prefix' => 'auth', 'middleware' => 'ap
 // User tasks
 Route::group(['namespace' => 'Api', 'prefix' => 'dashboard', 'middleware' => ['api', 'jwt.verify']], function() {
     Route::get('tasks', "TaskController@index");
-    Route::put('tasks/{task}', "TaskController@update")->middleware('user.task');
+    Route::put('tasks/{task}', "TaskController@update");
 });
 
 // Admin actions

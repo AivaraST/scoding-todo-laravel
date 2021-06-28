@@ -6,7 +6,7 @@ use App\Task;
 use App\User;
 use Illuminate\Auth\Access\HandlesAuthorization;
 
-class TaskUpdatePolicy
+class TaskPolicy
 {
     use HandlesAuthorization;
 
