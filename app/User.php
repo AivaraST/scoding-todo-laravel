@@ -17,7 +17,9 @@ class User extends Authenticatable implements JWTSubject
      * @var array
      */
     protected $fillable = [
-        'name', 'email', 'password',
+        'name',
+        'email',
+        'password',
     ];
 
     /**
@@ -26,7 +28,8 @@ class User extends Authenticatable implements JWTSubject
      * @var array
      */
     protected $hidden = [
-        'password', 'remember_token',
+        'password',
+        'remember_token',
     ];
 
     /**
@@ -58,7 +61,12 @@ class User extends Authenticatable implements JWTSubject
         return [];
     }
 
-    public function isAdministrator()
+    /**
+     * Return if user is an admin.
+     *
+     * @return bool
+     */
+    public function isAdministrator(): bool
     {
         return $this->admin;
     }

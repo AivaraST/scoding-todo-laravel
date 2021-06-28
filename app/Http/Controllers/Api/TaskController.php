@@ -12,6 +12,11 @@ use Illuminate\Support\Facades\Auth;
 
 class TaskController extends Controller
 {
+    public function __construct()
+    {
+        $this->middleware('can:update,task')->only('update');
+    }
+
     public function index(): AnonymousResourceCollection
     {
         $tasks = Auth::user()->tasks;
@@ -21,12 +26,6 @@ class TaskController extends Controller
 
     public function update(TaskUpdateRequest $request, Task $task): JsonResponse
     {
-        if (!Auth::user()->can('update', $task)) {
-            return response()->json([
-                'message' => 'Cannot update this task.',
-            ], 403);
-        }
-
         $task->update($request->validated());
 
         return response()->json([
