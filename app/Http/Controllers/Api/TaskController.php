@@ -6,34 +6,22 @@ use App\Http\Controllers\Controller;
 use App\Http\Requests\TaskUpdateRequest;
 use App\Http\Resources\TaskResource;
 use App\Task;
-use Illuminate\Http\Request;
+use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Resources\Json\AnonymousResourceCollection;
 use Illuminate\Support\Facades\Auth;
 
 class TaskController extends Controller
 {
-    /**
-     * @return AnonymousResourceCollection
-     */
     public function index(): AnonymousResourceCollection
     {
-        return TaskResource::collection(Auth::user()->tasks);
+        $tasks = Auth::user()->tasks;
+
+        return TaskResource::collection($tasks);
     }
 
-    public function update(TaskUpdateRequest $request, Task $task)
+    public function update(TaskUpdateRequest $request, Task $task): JsonResponse
     {
-        if ($task->user_id !== Auth::user()->id) {
-            return response()->json([
-                'error' => 'ne čia',
-            ],401);
-        }
-
-        $validated = $request->validated();
-
-        foreach ($validated as $field => $value) {
-            $task->$field = $value;
-        }
-        $task->save();
+        $task->update($request->validated());
 
         return response()->json([
             'message' => 'Task data updated successfully',
