@@ -1,6 +1,5 @@
 <?php
 
-use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
 
 /*
@@ -15,11 +14,11 @@ use Illuminate\Support\Facades\Route;
 */
 
 // Authentication
-Route::group(['namespace' => 'Api\Auth', 'prefix' => 'auth', 'middleware' => 'api'], function($router) {
+Route::group(['namespace' => 'Api\Auth', 'prefix' => 'auth', 'middleware' => 'api'], function() {
     Route::post('login', 'AuthController@login');
     Route::post('register', 'AuthController@register');
 
-    Route::group(['middleware' => 'jwt.verify'], function ($router) {
+    Route::group(['middleware' => 'jwt.verify'], function () {
         Route::post('logout', 'AuthController@logout');
         Route::post('refresh', 'AuthController@refresh');
         Route::get('user', "AuthController@user");
